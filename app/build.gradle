@@ -35,14 +35,6 @@ android {
     }
 }
 
-// Tambahkan gudang library Xposed di sini
-repositories {
-    google()
-    mavenCentral()
-    maven { url 'https://api.xposed.info/' }
-    maven { url 'https://jcenter.bintray.com/' }
-}
-
 dependencies {
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -50,7 +42,6 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.preference:preference-ktx:1.2.1'
     
-    // Xposed API - Sekarang pasti ketemu
     compileOnly 'de.robv.android.xposed:api:82'
     
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
