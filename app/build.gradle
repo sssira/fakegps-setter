@@ -35,7 +35,7 @@ android {
 
     signingConfigs {
         release {
-            def keystorePropertiesFile = rootProject.file("local.properties")
+//             def keystorePropertiesFile = rootProject.file("local.properties")
             def keystoreProperties = new Properties()
     }
 
