@@ -66,6 +66,16 @@
             android:widgetLayout="@layout/preference_switch_widget"
         />
 
+        <SwitchPreferenceCompat
+            android:title="Auto Kill on Grab Vibration"
+            android:summary="Otomatis stop joystick pas dapet getar order"
+            android:key="auto_kill_grab"
+            android:defaultValue="false"
+            android:icon="@drawable/ic_stop"
+            android:widgetLayout="@layout/preference_switch_widget"
+        />
+        
+
     </PreferenceCategory>
 
 </PreferenceScreen>

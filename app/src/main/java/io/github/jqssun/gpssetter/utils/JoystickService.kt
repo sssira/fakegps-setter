@@ -11,6 +11,8 @@ import io.github.controlwear.virtual.joystick.android.JoystickView
 import io.github.jqssun.gpssetter.R
 import kotlin.math.cos
 import kotlin.math.sin
+import android.content.BroadcastReceiver
+import android.content.IntentFilter
 
 class JoystickService : Service(),View.OnTouchListener,View.OnClickListener {
 
@@ -21,9 +23,24 @@ class JoystickService : Service(),View.OnTouchListener,View.OnClickListener {
     private var lat : Double = PrefManager.getLat
     private var lon : Double = PrefManager.getLng
 
+	private val stopReceiver = object : BroadcastReceiver() {
+	    override fun onReceive(context: Context, intent: Intent) {
+	        if (intent.action == "com.sssira.fakegps.STOP_SIGNAL") {
+	            // Pake PrefManager bawaan repo lo
+	            if (PrefManager.get().getBoolean("auto_kill_grab", false)) {
+	                stopSelf()
+	            }
+	        }
+	    }
+	}
+	
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate() {
         super.onCreate()
+        // Register receiver untuk dengerin sinyal dari Xposed
+        val filter = android.content.IntentFilter("com.sssira.fakegps.STOP_SIGNAL")
+        registerReceiver(stopReceiver, filter)
         wm =  getSystemService(WINDOW_SERVICE) as WindowManager
         val mInflater :LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         mJoystickContainerView = mInflater.inflate(R.layout.joystick, null as ViewGroup?) as View
@@ -82,6 +99,16 @@ class JoystickService : Service(),View.OnTouchListener,View.OnClickListener {
     }
 
     override fun onDestroy() {
+    	// Jangan lupa di unregister biar gak memory leak
+ 		try {
+    	    unregisterReceiver(stopReceiver)
+    	} catch (e: Exception) {}
+    	
+    	if (this::mJoystickContainerView.isInitialized && mJoystickContainerView != null) {
+    	        wm?.removeView(mJoystickContainerView)
+    	        this.mJoystickContainerView = null
+    	}
+    	    
         super.onDestroy()
         if (this.mJoystickContainerView != null) {
             this.wm!!.removeView(mJoystickContainerView);
