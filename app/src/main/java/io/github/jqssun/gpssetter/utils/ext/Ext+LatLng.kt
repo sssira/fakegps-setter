@@ -1,3 +1,4 @@
+import com.google.android.gms.maps.model.LatLng
 package io.github.jqssun.gpssetter.utils.ext
 
 import android.content.Context

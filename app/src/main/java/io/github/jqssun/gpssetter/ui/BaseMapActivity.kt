@@ -44,7 +44,7 @@ import io.github.jqssun.gpssetter.R
 import io.github.jqssun.gpssetter.adapter.FavListAdapter
 import io.github.jqssun.gpssetter.databinding.ActivityMapBinding
 import io.github.jqssun.gpssetter.ui.viewmodel.MainViewModel
-import io.github.jqssun.gpssetter.utils.JoystickService
+// No Joystick
 import io.github.jqssun.gpssetter.utils.NotificationsChannel
 import io.github.jqssun.gpssetter.utils.PrefManager
 import io.github.jqssun.gpssetter.utils.ext.*
@@ -105,7 +105,7 @@ abstract class BaseMapActivity: AppCompatActivity() {
         setupButtons()
         setupDrawer()
         if (PrefManager.isJoystickEnabled){
-            startService(Intent(this, JoystickService::class.java))
+            startService(Intent(this, // Service Removed))
         }
     }
 

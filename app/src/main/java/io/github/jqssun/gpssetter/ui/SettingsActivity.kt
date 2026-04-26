@@ -27,7 +27,7 @@ import androidx.preference.PreferenceDataStore
 import androidx.preference.PreferenceFragmentCompat
 import io.github.jqssun.gpssetter.R
 import io.github.jqssun.gpssetter.databinding.ActivitySettingsBinding
-import io.github.jqssun.gpssetter.utils.JoystickService
+// No Joystick
 import io.github.jqssun.gpssetter.utils.PrefManager
 import io.github.jqssun.gpssetter.utils.ext.showToast
 
@@ -154,10 +154,10 @@ class ActivitySettings : AppCompatActivity() {
                 it.setOnPreferenceClickListener {
                     if (askOverlayPermission()){
                         if (isJoystickRunning()) {
-                            requireContext().stopService(Intent(context,JoystickService::class.java))
+                            requireContext().stopService(Intent(context,// Service Removed))
                             it.summary = "Joystick disabled"
                         } else if (PrefManager.isStarted) {
-                            requireContext().startService(Intent(context,JoystickService::class.java))
+                            requireContext().startService(Intent(context,// Service Removed))
                             it.summary = "Joystick enabled"
                         } else {
                             requireContext().showToast(requireContext().getString(R.string.location_not_select))
