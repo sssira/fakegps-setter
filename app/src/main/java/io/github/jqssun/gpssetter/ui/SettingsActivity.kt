@@ -1,7 +1,5 @@
 package io.github.jqssun.gpssetter.ui
 
-import io.github.jqssun.gpssetter.R
-
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
