@@ -15,7 +15,8 @@ open class BaseMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_maps)
+        // Disesuaikan jadi activity_map (tanpa s) sesuai isi folder res lo
+        setContentView(R.layout.activity_map)
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
