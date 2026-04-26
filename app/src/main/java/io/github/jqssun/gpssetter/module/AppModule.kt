@@ -12,7 +12,6 @@ import io.github.jqssun.gpssetter.module.util.ApplicationScope
 import io.github.jqssun.gpssetter.room.AppDatabase
 import io.github.jqssun.gpssetter.room.FavoriteDao
 import io.github.jqssun.gpssetter.update.GitHubService
-import io.github.jqssun.gpssetter.utils.PrefManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import retrofit2.Retrofit
@@ -21,11 +20,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule{
+object AppModule {
 
     @Singleton
     @Provides
-    fun createGitHubService(): Retrofit =
+    fun createRetrofit(): Retrofit =
         Retrofit.Builder()
             .baseUrl("https://api.github.com/repos/jqssun/android-gps-setter/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -33,38 +32,30 @@ object AppModule{
 
     @Singleton
     @Provides
-    fun provideDownloadManger(application: Application) =
-        application.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-
-
-    @Singleton
-    @Provides
-    fun provideGithubService(retrofit: Retrofit): GitHubService =
+    fun provideGitHubService(retrofit: Retrofit): GitHubService =
         retrofit.create(GitHubService::class.java)
 
-    @Provides
-    @Singleton
-    fun provideDatabase(application: Application, callback: AppDatabase.Callback)
-            = Room.databaseBuilder(application, AppDatabase::class.java, "user_database")
-        .allowMainThreadQueries()
-        .fallbackToDestructiveMigration()
-        .addCallback(callback)
-        .build()
-
-
     @Singleton
     @Provides
-    fun providesUserDao(favoriteDatabase: AppDatabase) : FavoriteDao =
+    fun provideDownloadManager(application: Application): DownloadManager =
+        application.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+
+    @Provides
+    @Singleton
+    fun provideDatabase(application: Application, callback: AppDatabase.Callback): AppDatabase =
+        Room.databaseBuilder(application, AppDatabase::class.java, "user_database")
+            .allowMainThreadQueries()
+            .fallbackToDestructiveMigration()
+            .addCallback(callback)
+            .build()
+
+    @Singleton
+    @Provides
+    fun providesUserDao(favoriteDatabase: AppDatabase): FavoriteDao =
         favoriteDatabase.favoriteDao()
-
-    @Singleton
-    @Provides
-    fun provideSettingRepo() : PrefManager =
-        PrefManager
 
     @ApplicationScope
     @Provides
     @Singleton
-    fun providesApplicationScope() = CoroutineScope(SupervisorJob())
-
+    fun providesApplicationScope(): CoroutineScope = CoroutineScope(SupervisorJob())
 }

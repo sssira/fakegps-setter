@@ -1,6 +1,5 @@
 package io.github.jqssun.gpssetter.utils
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
@@ -17,28 +16,24 @@ import javax.inject.Singleton
 @Singleton
 class PrefManager @Inject constructor(@ApplicationContext private val context: Context) {
 
-    private const val START = "start"
-    private const val LATITUDE = "latitude"
-    private const val LONGITUDE = "longitude"
-    private const val HOOKED_SYSTEM = "system_hooked"
-    private const val RANDOM_POSITION = "random_position"
-    private const val ACCURACY_SETTING = "accuracy_level"
-    private const val MAP_TYPE = "map_type"
-    private const val DARK_THEME = "dark_theme"
-    private const val DISABLE_UPDATE = "update_disabled"
-    private const val ENABLE_JOYSTICK = "joystick_enabled"
+    companion object {
+        private const val START = "start"
+        private const val LATITUDE = "latitude"
+        private const val LONGITUDE = "longitude"
+        private const val HOOKED_SYSTEM = "system_hooked"
+        private const val RANDOM_POSITION = "random_position"
+        private const val ACCURACY_SETTING = "accuracy_level"
+        private const val MAP_TYPE = "map_type"
+        private const val DARK_THEME = "dark_theme"
+        private const val DISABLE_UPDATE = "update_disabled"
+        private const val ENABLE_JOYSTICK = "joystick_enabled"
+    }
 
     private val pref: SharedPreferences by lazy {
         val prefsFile = "${BuildConfig.APPLICATION_ID}_prefs"
-        try {
-            // MODE_WORLD_READABLE sering bikin crash di Android baru, kita proteksi
-            context.getSharedPreferences(prefsFile, Context.MODE_PRIVATE)
-        } catch (e: Exception) {
-            context.getSharedPreferences("default_prefs", Context.MODE_PRIVATE)
-        }
+        context.getSharedPreferences(prefsFile, Context.MODE_PRIVATE)
     }
 
-    // StateFlow untuk sinkronisasi ke ViewModel
     private val _isStarted = MutableStateFlow(pref.getBoolean(START, false))
     val isStarted: StateFlow<Boolean> = _isStarted
 
