@@ -82,7 +82,7 @@ class ActivitySettings : AppCompatActivity() {
         enableEdgeToEdge(navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT))
 
         setContentView(binding.root)
-        theme.applyStyle(com.google.android.material.R.style.Theme_Material3_DynamicColors_DayNight_NoActionBar, true)
+        theme.applyStyle(com.google.android.material.R.style.Theme_Material3_DayNight_NoActionBar, true)
         setSupportActionBar(binding.toolbar)
         if (savedInstanceState == null) {
             supportFragmentManager

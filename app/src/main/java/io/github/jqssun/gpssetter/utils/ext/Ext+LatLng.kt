@@ -2,13 +2,13 @@ package io.github.jqssun.gpssetter.utils.ext
 
 import android.content.Context
 import android.location.Geocoder
-import io.github.jqssun.gpssetter.ui.CustomLatLng
+import io.github.jqssun.gpssetter.ui.LatLng
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import java.util.*
 
-suspend fun CustomLatLng.getAddress(context: Context) = callbackFlow {
+suspend fun LatLng.getAddress(context: Context) = callbackFlow {
     withContext(Dispatchers.IO){
         val addresses =
             Geocoder(context, Locale.getDefault()).getFromLocation(latitude, longitude, 1)
