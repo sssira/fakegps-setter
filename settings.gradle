@@ -11,6 +11,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url 'https://api.xposed.info/' }
+        // Jitpack kita taruh paling bawah sebagai opsi terakhir
         maven { url 'https://jitpack.io' }
     }
 }

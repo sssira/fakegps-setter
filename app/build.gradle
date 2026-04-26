@@ -45,28 +45,29 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.preference:preference-ktx:1.2.1'
 
+    // Dagger Hilt
     implementation "com.google.dagger:hilt-android:2.50"
     kapt "com.google.dagger:hilt-compiler:2.50"
 
+    // Room
     implementation "androidx.room:room-runtime:2.6.1"
     implementation "androidx.room:room-ktx:2.6.1"
     kapt "androidx.room:room-compiler:2.6.1"
 
+    // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.google.code.gson:gson:2.10.1'
 
+    // GMS
     implementation 'com.google.android.gms:play-services-maps:18.2.0'
     implementation 'com.google.android.gms:play-services-location:21.1.0'
 
-    // Pake Xposed standard aja biar aman
+    // Xposed
     compileOnly 'de.robv.android.xposed:api:82'
 
     implementation 'com.jakewharton.timber:timber:5.0.1'
     implementation 'org.lsposed.hiddenapibypass:hiddenapibypass:4.3'
-    
-    // Joystick alternatif yang reponya lebih stabil
-    implementation 'com.github.manojadams:Open-Joystick-View:1.0.0'
 
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.7.0'
