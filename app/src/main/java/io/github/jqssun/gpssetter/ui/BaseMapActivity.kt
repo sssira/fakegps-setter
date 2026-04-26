@@ -105,7 +105,7 @@ abstract class BaseMapActivity: AppCompatActivity() {
         setupButtons()
         setupDrawer()
         if (PrefManager.isJoystickEnabled){
-            startService(Intent(this, // Service Removed))
+            startService(Intent(this, ))
         }
     }
 

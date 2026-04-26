@@ -154,10 +154,10 @@ class ActivitySettings : AppCompatActivity() {
                 it.setOnPreferenceClickListener {
                     if (askOverlayPermission()){
                         if (isJoystickRunning()) {
-                            requireContext().stopService(Intent(context,// Service Removed))
+                            requireContext().stopService(Intent(context,))
                             it.summary = "Joystick disabled"
                         } else if (PrefManager.isStarted) {
-                            requireContext().startService(Intent(context,// Service Removed))
+                            requireContext().startService(Intent(context,))
                             it.summary = "Joystick enabled"
                         } else {
                             requireContext().showToast(requireContext().getString(R.string.location_not_select))
@@ -172,7 +172,6 @@ class ActivitySettings : AppCompatActivity() {
             var isRunning = false
             val manager = requireContext().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager? ?: return false
             for (service in manager.getRunningServices(Int.MAX_VALUE)) {
-                if ("io.github.jqssun.gpssetter.utils.JoystickService" == service.service.className) {
                     isRunning = true
                 }
             }
