@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
 
-    <application
+    <application 
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,18 +20,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GPSSetter"
         tools:targetApi="34">
+        
         <activity
             android:name=".ui.ActivitySettings"
             android:exported="false"
             android:label="@string/title_activity_settings"
             android:launchMode="singleTop">
         </activity>
+        
         <activity
             android:name=".ui.MapActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -40,14 +41,9 @@
             android:name=".utils.JoystickService"
             android:exported="false" />
 
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDJHl2fdyya0PuEY-LRFUZM71pijfZN6IE" />
-        <meta-data
-            android:name="com.maplibre.AccessToken"
-            android:value="pk.eyJ1IjoiZGVsdGFjaGF0IiwiYSI6ImNqc3c1aWczMzBjejY0M28wZmU0a3cwMzMifQ.ZPTH9dFJaav06RAu4rTYHw" />
-
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -75,5 +71,4 @@
             android:name="xposedscope"
             android:resource="@array/scopes" />
     </application>
-
 </manifest>
