@@ -5,15 +5,17 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import io.github.jqssun.gpssetter.BuildConfig
-import io.github.jqssun.gpssetter.gsApp
-import kotlinx.coroutines.DelicateCoroutinesApi
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-@SuppressLint("WorldReadableFiles")
-object PrefManager   {
+@Singleton
+class PrefManager @Inject constructor(@ApplicationContext private val context: Context) {
 
     private const val START = "start"
     private const val LATITUDE = "latitude"
@@ -26,49 +28,40 @@ object PrefManager   {
     private const val DISABLE_UPDATE = "update_disabled"
     private const val ENABLE_JOYSTICK = "joystick_enabled"
 
-
     private val pref: SharedPreferences by lazy {
+        val prefsFile = "${BuildConfig.APPLICATION_ID}_prefs"
         try {
-            val prefsFile = "${BuildConfig.APPLICATION_ID}_prefs"
-            gsApp.getSharedPreferences(
-                prefsFile,
-                Context.MODE_WORLD_READABLE
-            )
-        }catch (e:SecurityException){
-            val prefsFile = "${BuildConfig.APPLICATION_ID}_prefs"
-            gsApp.getSharedPreferences(
-                prefsFile,
-                Context.MODE_PRIVATE
-            )
+            // MODE_WORLD_READABLE sering bikin crash di Android baru, kita proteksi
+            context.getSharedPreferences(prefsFile, Context.MODE_PRIVATE)
+        } catch (e: Exception) {
+            context.getSharedPreferences("default_prefs", Context.MODE_PRIVATE)
         }
-
     }
 
+    // StateFlow untuk sinkronisasi ke ViewModel
+    private val _isStarted = MutableStateFlow(pref.getBoolean(START, false))
+    val isStarted: StateFlow<Boolean> = _isStarted
 
-    val isStarted : Boolean
-        get() = pref.getBoolean(START, false)
+    private val _getLat = MutableStateFlow(pref.getFloat(LATITUDE, 40.7128F).toDouble())
+    val getLat: StateFlow<Double> = _getLat
 
-    val getLat : Double
-        get() = pref.getFloat(LATITUDE, 40.7128F).toDouble()
+    private val _getLng = MutableStateFlow(pref.getFloat(LONGITUDE, -74.0060F).toDouble())
+    val getLng: StateFlow<Double> = _getLng
 
-    val getLng : Double
-        get() = pref.getFloat(LONGITUDE, -74.0060F).toDouble()
+    private val _mapType = MutableStateFlow(pref.getInt(MAP_TYPE, 1))
+    val mapType: StateFlow<Int> = _mapType
 
-    var isSystemHooked : Boolean
+    var isSystemHooked: Boolean
         get() = pref.getBoolean(HOOKED_SYSTEM, false)
-        set(value) { pref.edit().putBoolean(HOOKED_SYSTEM,value).apply() }
+        set(value) { pref.edit().putBoolean(HOOKED_SYSTEM, value).apply() }
 
-    var isRandomPosition :Boolean
+    var isRandomPosition: Boolean
         get() = pref.getBoolean(RANDOM_POSITION, false)
         set(value) { pref.edit().putBoolean(RANDOM_POSITION, value).apply() }
 
-    var accuracy : String?
-        get() = pref.getString(ACCURACY_SETTING,"10")
-        set(value) { pref.edit().putString(ACCURACY_SETTING,value).apply()}
-
-    var mapType : Int
-        get() = pref.getInt(MAP_TYPE,1)
-        set(value) { pref.edit().putInt(MAP_TYPE,value).apply()}
+    var accuracy: String?
+        get() = pref.getString(ACCURACY_SETTING, "10")
+        set(value) { pref.edit().putString(ACCURACY_SETTING, value).apply() }
 
     var darkTheme: Int
         get() = pref.getInt(DARK_THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
@@ -82,22 +75,17 @@ object PrefManager   {
         get() = pref.getBoolean(ENABLE_JOYSTICK, false)
         set(value) = pref.edit().putBoolean(ENABLE_JOYSTICK, value).apply()
 
-    fun update(start:Boolean, la: Double, ln: Double) {
-        runInBackground {
-            val prefEditor = pref.edit()
-            prefEditor.putFloat(LATITUDE, la.toFloat())
-            prefEditor.putFloat(LONGITUDE, ln.toFloat())
-            prefEditor.putBoolean(START, start)
-            prefEditor.apply()
-        }
-
-    }
-
-    @OptIn(DelicateCoroutinesApi::class)
-    private fun runInBackground(method: suspend () -> Unit){
-        GlobalScope.launch(Dispatchers.IO) {
-            method.invoke()
+    fun update(start: Boolean, la: Double, ln: Double) {
+        CoroutineScope(Dispatchers.IO).launch {
+            pref.edit().apply {
+                putFloat(LATITUDE, la.toFloat())
+                putFloat(LONGITUDE, ln.toFloat())
+                putBoolean(START, start)
+                apply()
+            }
+            _isStarted.value = start
+            _getLat.value = la
+            _getLng.value = ln
         }
     }
-
 }
