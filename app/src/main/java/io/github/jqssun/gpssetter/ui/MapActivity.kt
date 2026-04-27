@@ -12,8 +12,5 @@ class MapActivity : BaseMapActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // BaseMapActivity sudah mengatur setContentView dan map fragment
-        
-        // Di sini nanti kita bisa tambahkan observer untuk location updates
     }
 }

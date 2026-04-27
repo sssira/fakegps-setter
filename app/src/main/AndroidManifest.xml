@@ -72,3 +72,4 @@
             android:resource="@array/scopes" />
     </application>
 </manifest>
+
